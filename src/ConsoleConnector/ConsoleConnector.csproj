@@ -502,6 +502,12 @@
     <Compile Include="Samples\Parameters\Type\FindTypeParamSample.cs" />
     <Compile Include="Samples\Parameters\Type\ListTypeParamsAcrossTypesSample.cs" />
     <Compile Include="Samples\Parameters\Type\UpdateTypeParamSample.cs" />
+    <Compile Include="Samples\DesignReferences\CreateDesignRefSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignInstancesSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignInstancesByIdSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignInstancesByNameSample.cs" />
+    <Compile Include="Samples\DesignReferences\InstantiateDesignSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
