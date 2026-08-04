@@ -508,6 +508,9 @@
     <Compile Include="Samples\DesignReferences\GetDesignInstancesByIdSample.cs" />
     <Compile Include="Samples\DesignReferences\GetDesignInstancesByNameSample.cs" />
     <Compile Include="Samples\DesignReferences\InstantiateDesignSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsStepSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsIfcSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsObjSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
