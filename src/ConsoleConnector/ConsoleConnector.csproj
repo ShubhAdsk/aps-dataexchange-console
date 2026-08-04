@@ -427,6 +427,16 @@
     <Compile Include="Samples\SampleAddressAttribute.cs" />
     <Compile Include="Samples\SampleContext.cs" />
     <Compile Include="Samples\SampleDataFactory.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\MultiGeometryMultiParameterScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\ElementWithPropertiesScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\ElementWithDesignRefScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\TwoVersionRoundTripScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\PullIncrementalRevisionScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\DownloadAllFormatsScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\EndToEndCreateSyncDownloadScenarioSample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

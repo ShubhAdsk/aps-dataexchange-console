@@ -315,5 +315,85 @@ namespace ConsoleConnector.Common
         }
 
         private static readonly string[] DemoParamNames = { "TypeBool", "TypeInt64", "TypeFloat64", "TypeString" };
+
+        /// <summary>Prompts for a custom instance param name/value and adds it. Used by 5.1.2 and scenarios that need one.</summary>
+        internal static async Task<IParameter?> AddCustomInstanceParamInteractiveAsync(IElement element)
+        {
+            var defaultName = SuggestUniqueCustomParamName(element);
+            var name = Prompt.AskString("Parameter name", defaultName);
+            var valueText = Prompt.AskString("Value (number)", "4.52");
+            if (string.IsNullOrWhiteSpace(name) || !double.TryParse(valueText, out var value))
+            {
+                TerminalUi.Chat("Name and numeric value are required.");
+                return null;
+            }
+
+            var added = await AddCustomInstanceParamAsync(element, name, value, DimensionsGroupId);
+            if (added == null)
+            {
+                TerminalUi.Error("Failed to add parameter.");
+                return null;
+            }
+
+            PrintParameter(added, "  ");
+            return added;
+        }
+
+        /// <summary>Prompts for a built-in schema id/value and adds it. Used by 5.1.1 and scenarios that need one.</summary>
+        internal static async Task<IParameter?> AddBuiltInInstanceParamInteractiveAsync(SampleContext ctx, IElement element)
+        {
+            var schemaId = Prompt.AskString("Built-in schema id", DefaultBuiltInSchemaId(ctx));
+            var valueText = Prompt.AskString("Value (number)", "5.345");
+            if (!double.TryParse(valueText, out var value))
+            {
+                TerminalUi.Error("Invalid numeric value.");
+                return null;
+            }
+
+            var added = await AddBuiltInInstanceParamAsync(element, schemaId, value);
+            if (added == null)
+            {
+                TerminalUi.Error("Failed to add parameter.");
+                return null;
+            }
+
+            PersistBuiltInSchemaId(ctx, schemaId);
+            PrintParameter(added, "  ");
+            return added;
+        }
+
+        /// <summary>Picks an updatable instance param and applies a suggested new value. Used by 5.1.3 and scenarios that need one.</summary>
+        internal static IParameter? UpdateInstanceParamInteractive(IElement element)
+        {
+            var parameters = element.InstanceParameters.ToList();
+            if (parameters.Count == 0)
+            {
+                TerminalUi.Warning("No instance parameters on this element. Run 5.1.1 or 5.1.2 first.");
+                return null;
+            }
+
+            PrintParameters(parameters, "Instance parameters");
+            var target = PickUpdatableInstanceParam(parameters);
+            var paramName = Prompt.AskString("Parameter name to update", target.Name);
+            var param = string.IsNullOrWhiteSpace(paramName)
+                ? target
+                : element.FindInstanceParameter(paramName) ?? target;
+            if (param == null)
+            {
+                TerminalUi.Error($"Parameter not found: {paramName}");
+                return null;
+            }
+
+            if (element is not Element concrete)
+            {
+                TerminalUi.Chat("Unexpected element type.");
+                return null;
+            }
+
+            var newValue = SuggestUpdatedValue(param);
+            var updated = concrete.UpdateInstanceParameter(param.SchemaId, newValue);
+            PrintParameter(updated, "  Updated: ");
+            return updated;
+        }
     }
 }
