@@ -515,6 +515,9 @@
     <Compile Include="Samples\Revisions\ListModifiedElementsSample.cs" />
     <Compile Include="Samples\Revisions\ListDeletedElementsSample.cs" />
     <Compile Include="Samples\Revisions\ListAllChangedElementsSample.cs" />
+    <Compile Include="Samples\SdkEvents\SubscribeExchangeUpdatesSample.cs" />
+    <Compile Include="Samples\SdkEvents\UnsubscribeExchangeUpdatesSample.cs" />
+    <Compile Include="Samples\SdkEvents\ListenViewableGenerationSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
