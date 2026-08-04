@@ -518,6 +518,11 @@
     <Compile Include="Samples\SdkEvents\SubscribeExchangeUpdatesSample.cs" />
     <Compile Include="Samples\SdkEvents\UnsubscribeExchangeUpdatesSample.cs" />
     <Compile Include="Samples\SdkEvents\ListenViewableGenerationSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\ToggleHttpDebugLoggingSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\CheckFeatureFlagSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\ShowProgressStepsSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\StartTelemetrySessionSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\StopTelemetrySessionSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
