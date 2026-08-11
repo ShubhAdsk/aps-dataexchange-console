@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.6.0--alpha-orange.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.6.0--beta-orange.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -225,11 +225,11 @@ public class MyCustomCommand : Command
 
 ## 🔄 Migration Guide: SDK 7.6.0 Upgrade
 
-This section documents the migration from SDK 7.5.0 to **Autodesk Data Exchange SDK 7.6.0-alpha**.
+This section documents the migration from SDK 7.5.0 to **Autodesk Data Exchange SDK 7.6.0-beta**.
 
 ### 📋 Overview of Changes
 
-- **SDK Version**: Upgraded to `Autodesk.DataExchange 7.6.0-alpha`
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 7.6.0-beta`
 - **Breaking Changes**: Yes — several `Element`/`ElementDataModel` APIs moved from concrete classes to interfaces (see below)
 - **Build result**: 0 errors after fixes applied
 
@@ -237,7 +237,7 @@ This section documents the migration from SDK 7.5.0 to **Autodesk Data Exchange 
 
 | Package | Previous Version | New Version | Impact |
 |---------|------------------|-------------|---------|
-| `Autodesk.DataExchange` | `7.5.0-beta` | `7.6.0-alpha` | **Minor** - a few breaking changes |
+| `Autodesk.DataExchange` | `7.5.0-beta` | `7.6.0-beta` | **Minor** - a few breaking changes |
 
 ### ⚠️ Breaking Changes
 
@@ -250,7 +250,7 @@ The concrete `Autodesk.DataExchange.DataModels.ElementDataModel` class still exi
 currentExchangeData = (await Client.GetElementDataModelAsync(exchangeIdentifier)).Value;
 ```
 
-**After (7.6.0-alpha):**
+**After (7.6.0-beta):**
 ```csharp
 currentExchangeData = (ElementDataModel)(await Client.GetElementDataModelAsync(exchangeIdentifier)).Value;
 ```
@@ -272,7 +272,7 @@ Iterating `elementDataModel.Elements` (e.g. via `FirstOrDefault`) now produces `
 elementDataModel.DeleteTypeParameter(element.Type, parameterName.Value);
 ```
 
-**After (7.6.0-alpha):**
+**After (7.6.0-beta):**
 ```csharp
 elementDataModel.DeleteTypeParameter(element.Type.Value, parameterName.Value);
 ```
@@ -292,12 +292,12 @@ await elementDataModel.AddTypeParameterAsync(element.Type, parameter);
 Update your `packages.config`:
 
 ```xml
-<package id="Autodesk.DataExchange" version="7.6.0-alpha" targetFramework="net48" />
+<package id="Autodesk.DataExchange" version="7.6.0-beta" targetFramework="net48" />
 ```
 
 Update `ConsoleConnector.csproj` and `ConsoleConnector_Test.csproj`:
 - Assembly version: `Version=7.5.0.0` → `Version=7.6.0.0`
-- HintPaths: `Autodesk.DataExchange.7.5.0-beta\` → `Autodesk.DataExchange.7.6.0-alpha\`
+- HintPaths: `Autodesk.DataExchange.7.5.0-beta\` → `Autodesk.DataExchange.7.6.0-beta\`
 - Build target imports: same substitution
 
 #### Step 2: Apply the Code Fixes
@@ -323,7 +323,7 @@ Run the comprehensive workflow test to confirm everything works as expected:
 
 ### 🎯 Summary of Changes
 
-| Aspect | SDK 7.5.0 | SDK 7.6.0-alpha |
+| Aspect | SDK 7.5.0 | SDK 7.6.0-beta |
 |--------|-----------|-----------------|
 | Element retrieval | Returns `ElementDataModel`/concrete `Element` | Returns `IElementDataModel`/`IElement` |
 | Element type | `Element.Type` is `string` | `IElement.Type` is `IElementType` (use `.Value` for the string) |
@@ -347,7 +347,7 @@ This command validates:
 ---
 
 **Migration Checklist:**
-- [x] Updated all package references to 7.6.0-alpha
+- [x] Updated all package references to 7.6.0-beta
 - [x] Fixed `Element`/`ElementDataModel` → `IElement`/`IElementDataModel` breaking changes
 - [x] Restored NuGet packages and rebuilt the solution (0 errors)
 - [x] Ran the MSTest unit test suite (11/11 passed)
