@@ -93,7 +93,7 @@ namespace ConsoleConnector.Common
 
         internal static void PrintElementSummary(IElement element, string prefix = "    ")
         {
-            TerminalUi.Chat($"{prefix}{element.Name} ({element.Id})");
+            TerminalUi.Chat($"{prefix}{element.Name} ({element.SourceId})");
             TerminalUi.Chat($"{prefix}  Category: {element.Category ?? "(none)"}");
             TerminalUi.Chat($"{prefix}  Family:   {element.Family ?? "(none)"}");
             TerminalUi.Chat($"{prefix}  Type:     {element.Type?.Value ?? "(none)"}");
