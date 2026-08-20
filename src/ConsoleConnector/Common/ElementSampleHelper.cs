@@ -46,7 +46,16 @@ namespace ConsoleConnector.Common
                 details = default!;
                 await TerminalUi.RunWithStatusAsync(
                     "Resolving exchange details…",
-                    async () => details = await ctx.Client.GetExchangeDetailsAsync(active.ExchangeFileUrn).ConfigureAwait(false));
+                    async () =>
+                    {
+                        var response = await ctx.Client
+                            .GetExchangeDetailsAsync(active.CollectionId, active.ExchangeFileUrn)
+                            .ConfigureAwait(false);
+                        if (response.IsFailed)
+                            throw new InvalidOperationException(
+                                response.Errors.FirstOrDefault()?.Message ?? "Failed to resolve exchange details.");
+                        details = response.Value;
+                    });
             }
             catch (Exception ex)
             {
