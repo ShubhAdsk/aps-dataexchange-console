@@ -199,7 +199,7 @@ namespace ConsoleConnector.Common
         internal static void RegisterLoaded(SampleContext ctx, ExchangeDetails details, ElementDataModel model)
         {
             var title = details.DisplayName ?? details.FileUrn;
-            ctx.Exchanges[title] = new ActiveExchange(details.FileUrn, model);
+            ctx.Exchanges[title] = new ActiveExchange(details.FileUrn, details.CollectionID, model);
             RememberLoaded(
                 ctx,
                 title,
@@ -333,7 +333,7 @@ namespace ConsoleConnector.Common
                 return false;
             }
 
-            ctx.Exchanges[info.Title] = new ActiveExchange(info.FileUrn, model);
+            ctx.Exchanges[info.Title] = new ActiveExchange(info.FileUrn, info.CollectionId, model);
             ctx.LastExchangeTitle = info.Title;
             return true;
         }
