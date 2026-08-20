@@ -31,14 +31,14 @@ namespace ConsoleConnector.Common
         }
 
         internal static IDesign CreateDesignRef(ElementDataModel model, IElement def, string designName, string designId) =>
-            model.CreateDesignRef(def, designName, designId);
+            model.GetOrCreateDesignRef(def, designName, designId);
             internal static void PrintDesignSummary(ElementDataModel model, IDesign design)
         {
             var instances = model.GetDesignInstances(design).ToList();
-            TerminalUi.Chat($"  Design: {design.Name} (id: {design.ID})");
+            TerminalUi.Chat($"  Design: {design.Name} (id: {design.SourceId})");
             TerminalUi.Chat($"  Instances: {instances.Count}");
             foreach (var instance in instances)
-                TerminalUi.Chat($"    {instance.Name} ({instance.Id})");
+                TerminalUi.Chat($"    {instance.Name} ({instance.SourceId})");
         }
 
         internal static (string DesignName, string DesignId) PromptDesignIdentity(string? defaultName = null, string? defaultId = null)
