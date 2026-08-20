@@ -93,7 +93,7 @@ namespace ConsoleConnector.Common
                 async () => geometry = await Task.Run(() =>
                     ElementDataModel.CreateFileGeometry(path, format, DefaultRenderStyle, DefaultUnits)).ConfigureAwait(false));
             session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
-            TerminalUi.Success($"Attached {format} geometry from file to {element.Name} ({element.Id}).");
+            TerminalUi.Success($"Attached {format} geometry from file to {element.Name} ({element.SourceId}).");
             if (!syncAfter)
                 return true;
 
@@ -134,7 +134,7 @@ namespace ConsoleConnector.Common
                     var geometry = ElementDataModel.CreateFileGeometry(memory, format, DefaultRenderStyle, DefaultUnits);
                     session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
                 });
-            TerminalUi.Success($"Attached {format} geometry from stream to {element.Name} ({element.Id}).");
+            TerminalUi.Success($"Attached {format} geometry from stream to {element.Name} ({element.SourceId}).");
             return await ElementSampleHelper.SyncAsync(ctx, session);
         }
 
@@ -154,7 +154,7 @@ namespace ConsoleConnector.Common
 
             var geometry = geometryFactory();
             session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
-            TerminalUi.Success($"Attached {geometryLabel} to {element.Name} ({element.Id}).");
+            TerminalUi.Success($"Attached {geometryLabel} to {element.Name} ({element.SourceId}).");
             if (!syncAfter)
                 return true;
 
@@ -173,7 +173,7 @@ namespace ConsoleConnector.Common
 
             var geometry = ElementDataModel.CreateMeshGeometry(mesh, meshName, DefaultUnits);
             session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
-            TerminalUi.Success($"Attached mesh '{meshName}' to {element.Name} ({element.Id}).");
+            TerminalUi.Success($"Attached mesh '{meshName}' to {element.Name} ({element.SourceId}).");
             return await ElementSampleHelper.SyncAsync(ctx, session);
         }
 
@@ -183,7 +183,7 @@ namespace ConsoleConnector.Common
             if (ctx.ScenarioExchangeTitle != null && topLevel.Count == 1)
             {
                 var only = topLevel[0];
-                TerminalUi.Chat($"Element: {only.Name} ({only.Id})");
+                TerminalUi.Chat($"Element: {only.Name} ({only.SourceId})");
                 return Task.FromResult<IElement?>(only);
             }
 
@@ -211,7 +211,7 @@ namespace ConsoleConnector.Common
             return Task.FromResult<IElement?>(null);
         }
 
-            if (model.GetElementById(elementId) != null)
+            if (model.GetElementsBySourceId(elementId).Any())
             {
                 TerminalUi.Warning($"Element id already exists: {elementId}");
             return Task.FromResult<IElement?>(null);
