@@ -31,14 +31,14 @@ namespace ConsoleConnector.Common
         }
 
         internal static IDesign CreateDesignRef(ElementDataModel model, IElement def, string designName, string designId) =>
-            model.CreateDesignRef(def, designName, designId);
+            model.GetOrCreateDesignRef(def, designName, designId);
             internal static void PrintDesignSummary(ElementDataModel model, IDesign design)
         {
             var instances = model.GetDesignInstances(design).ToList();
-            TerminalUi.Chat($"  Design: {design.Name} (id: {design.ID})");
+            TerminalUi.Chat($"  Design: {design.Name} (id: {design.SourceId})");
             TerminalUi.Chat($"  Instances: {instances.Count}");
             foreach (var instance in instances)
-                TerminalUi.Chat($"    {instance.Name} ({instance.Id})");
+                TerminalUi.Chat($"    {instance.Name} ({instance.SourceId})");
         }
 
         internal static (string DesignName, string DesignId) PromptDesignIdentity(string? defaultName = null, string? defaultId = null)
@@ -56,8 +56,8 @@ namespace ConsoleConnector.Common
                 return null;
 
             var (designName, designId) = PromptDesignIdentity();
-            var existing = session.Model.GetDesigns()
-                .FirstOrDefault(d => string.Equals(d.ID, designId, StringComparison.OrdinalIgnoreCase));
+            var existing = session.Model.GetDesignRefs()
+                .FirstOrDefault(d => string.Equals(d.SourceId, designId, StringComparison.OrdinalIgnoreCase));
             IDesign design;
             if (existing != null)
             {
@@ -88,11 +88,11 @@ namespace ConsoleConnector.Common
 
             var (designName, designId) = PromptDesignIdentity();
             var defId = Prompt.AskString("Definition element id (existing or new)", $"def_{designId}");
-            var def = session.Model.GetElementById(defId);
+            var def = session.Model.GetElementsBySourceId(defId).FirstOrDefault();
             IDesign design;
 
-            var existingDesign = session.Model.GetDesigns()
-                .FirstOrDefault(d => string.Equals(d.ID, designId, StringComparison.OrdinalIgnoreCase));
+            var existingDesign = session.Model.GetDesignRefs()
+                .FirstOrDefault(d => string.Equals(d.SourceId, designId, StringComparison.OrdinalIgnoreCase));
             if (existingDesign != null)
             {
                 design = existingDesign;
@@ -104,15 +104,15 @@ namespace ConsoleConnector.Common
             }
             else
             {
-                design = session.Model.GetOrCreateDesignRef((Element)def, designName, designId);
+                design = session.Model.GetOrCreateDesignRef(def, designName, designId);
             }
 
             var instanceId = Prompt.AskString("Instance element id", $"inst_{Guid.NewGuid():N}"[..10]);
             var instanceName = Prompt.AskString("Instance element name", $"{designName}@Site");
             var instance = CreateInstance(session.Model, instanceId, instanceName);
-            var useById = Prompt.AskString("Use InstantiateDesignById? [y/N]", "N");
+            var useById = Prompt.AskString("Use InstantiateDesignBySourceId? [y/N]", "N");
             if (string.Equals(useById, "y", StringComparison.OrdinalIgnoreCase))
-                session.Model.InstantiateDesignById(designId, (Element)instance);
+                session.Model.InstantiateDesignBySourceId(designId, instance);
             else
                 session.Model.InstantiateDesign(design, instance);
             PrintDesignSummary(session.Model, design);

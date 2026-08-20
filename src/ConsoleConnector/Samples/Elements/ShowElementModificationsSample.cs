@@ -56,7 +56,7 @@ namespace ConsoleConnector.Samples
 
             // SDK: inspect element modifications across revisions
             var modifications = concrete.GetElementModifications(revisionIds);
-            TerminalUi.Chat($"Element: {element.Name} ({element.Id})");
+            TerminalUi.Chat($"Element: {element.Name} ({element.SourceId})");
             TerminalUi.Chat($"Revisions checked: {revisionIds.Count}");
             TerminalUi.Chat($"Modifications: {FormatModifications(modifications)}");
             if (modifications == ElementModifications.NoChange)

@@ -57,7 +57,7 @@ namespace ConsoleConnector.Samples
             foreach (var pair in result)
             {
                 var count = pair.Value?.Count() ?? 0;
-                TerminalUi.Chat($"  {pair.Key.Name} ({pair.Key.Id}): {count} geometry asset(s)");
+                TerminalUi.Chat($"  {pair.Key.Name} ({pair.Key.SourceId}): {count} geometry asset(s)");
         }
         }
     }
