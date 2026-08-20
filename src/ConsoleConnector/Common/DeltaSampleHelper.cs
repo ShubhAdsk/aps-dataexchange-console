@@ -48,7 +48,7 @@ namespace ConsoleConnector.Common
             var list = elements.ToList();
             TerminalUi.Chat($"  {heading}: {list.Count}");
             foreach (var element in list)
-                TerminalUi.Chat($"    {element.Name} ({element.Id})");
+                TerminalUi.Chat($"    {element.Name} ({element.SourceId})");
         }
 
         internal static void PrintDeltaSummary(ElementDataModel model, IEnumerable<string> revisionIds)
