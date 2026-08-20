@@ -145,7 +145,15 @@ namespace ConsoleConnector.Common
                 details = default!;
                 await TerminalUi.RunWithStatusAsync(
                     "Resolving exchange details…",
-                    async () => details = await ctx.Client.GetExchangeDetailsAsync(fileUrn).ConfigureAwait(false));
+                    async () =>
+                    {
+                        // A freshly picked exchange is known only by its file URN; the collection id is
+                        // discoverable only from the details themselves, so the single-arg (obsolete)
+                        // lookup is the only resolver available for this bootstrap path.
+#pragma warning disable CS0618 // Type or member is obsolete
+                        details = await ctx.Client.GetExchangeDetailsAsync(fileUrn).ConfigureAwait(false);
+#pragma warning restore CS0618
+                    });
             }
             catch (Exception ex)
             {
@@ -172,7 +180,17 @@ namespace ConsoleConnector.Common
                 return false;
             }
 
-            var details = await ctx.Client.GetExchangeDetailsAsync(active.ExchangeFileUrn);
+            var detailsResponse = await ctx.Client
+                .GetExchangeDetailsAsync(active.CollectionId, active.ExchangeFileUrn)
+                .ConfigureAwait(false);
+            if (detailsResponse.IsFailed)
+            {
+                var detailsError = detailsResponse.Errors.FirstOrDefault()?.Message ?? "Unknown error";
+                TerminalUi.Error($"Failed to resolve exchange: {detailsError}");
+                return false;
+            }
+
+            var details = detailsResponse.Value;
             var identifier = ToIdentifier(details, ctx.Folder!.HubId);
             var model = active.DataModel;
 
