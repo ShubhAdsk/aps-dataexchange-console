@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
 {
     /// <summary>
     /// What you learn: How to query design instances by design id.
-    /// SDK: ElementDataModel.GetDesignInstancesById.
+    /// SDK: ElementDataModel.GetDesignInstancesBySourceId.
     /// Console plumbing: DesignSampleHelper.
     /// Prerequisites: 2.2 Load Exchange.
     /// </summary>
@@ -24,10 +24,10 @@ namespace ConsoleConnector.Samples
             if (session == null)
                 return;
             var designId = Prompt.AskString("Design id", "chair-id");
-            var instances = session.Model.GetDesignInstancesById(designId).ToList();
+            var instances = session.Model.GetDesignInstancesBySourceId(designId).ToList();
             TerminalUi.Chat($"Instances for design id '{designId}': {instances.Count}");
             foreach (var instance in instances)
-                TerminalUi.Chat($"  {instance.Name} ({instance.Id})");
+                TerminalUi.Chat($"  {instance.Name} ({instance.SourceId})");
         }
     }
 }
