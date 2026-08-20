@@ -38,7 +38,7 @@ namespace ConsoleConnector.Samples
             }
 
             var children = parent.GetChildElements().ToList();
-            TerminalUi.Chat($"Children of {parent.Name} ({parent.Id}): {children.Count}");
+            TerminalUi.Chat($"Children of {parent.Name} ({parent.SourceId}): {children.Count}");
             if (children.Count == 0)
             {
                 TerminalUi.Warning("  (none — run 3.2 Add Child Element to create one)");
