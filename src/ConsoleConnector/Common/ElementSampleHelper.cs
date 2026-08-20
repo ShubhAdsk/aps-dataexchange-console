@@ -113,7 +113,7 @@ namespace ConsoleConnector.Common
                 return null;
             }
 
-            if (model.GetElementById(elementId) != null)
+            if (model.GetElementsBySourceId(elementId).Any())
             {
                 TerminalUi.Chat($"Element id already exists: {elementId}");
                 return null;
@@ -122,7 +122,7 @@ namespace ConsoleConnector.Common
             TerminalUi.Chat($"Elements before: {beforeCount}");
             var element = model.AddElement(elementId, name);
             ClassifyGeneric(model, element);
-            TerminalUi.Chat($"Added: {element.Name} ({element.Id})");
+            TerminalUi.Chat($"Added: {element.Name} ({element.SourceId})");
             return element;
         }
 
@@ -153,16 +153,16 @@ namespace ConsoleConnector.Common
                 return null;
             }
 
-            if (model.GetElementById(elementId) != null)
+            if (model.GetElementsBySourceId(elementId).Any())
             {
                 TerminalUi.Chat($"Element id already exists: {elementId}");
                 return null;
             }
 
-            TerminalUi.Info($"Adding child under {parent.Name} ({parent.Id})...");
-            var child = model.AddElement(elementId, name, (Element)parent);
+            TerminalUi.Info($"Adding child under {parent.Name} ({parent.SourceId})...");
+            var child = model.AddElement(elementId, name, parent);
             ClassifyGeneric(model, child);
-            TerminalUi.Chat($"Added: {child.Name} ({child.Id})");
+            TerminalUi.Chat($"Added: {child.Name} ({child.SourceId})");
             return child;
         }
 
