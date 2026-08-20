@@ -27,7 +27,7 @@ namespace ConsoleConnector.Samples
             var instances = session.Model.GetDesignInstancesByName(designName).ToList();
             TerminalUi.Chat($"Instances for design '{designName}': {instances.Count}");
             foreach (var instance in instances)
-                TerminalUi.Chat($"  {instance.Name} ({instance.Id})");
+                TerminalUi.Chat($"  {instance.Name} ({instance.SourceId})");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace ConsoleConnector.Samples
             var session = await DesignSampleHelper.BeginAsync(ctx);
             if (session == null)
                 return;
-            var designs = session.Model.GetDesigns().ToList();
+            var designs = session.Model.GetDesignRefs().ToList();
             if (designs.Count == 0)
             {
                 TerminalUi.Warning("No designs. Run 6.1 first.");
@@ -33,7 +33,7 @@ namespace ConsoleConnector.Samples
             var design = ListPicker.PickOne(
                 "Pick design",
                 designs,
-                d => ListPicker.FormatNameAndDetail(d.Name, d.ID));
+                d => ListPicker.FormatNameAndDetail(d.Name, d.SourceId));
             if (design == null)
             {
                 TerminalUi.Dim("Cancelled.");
