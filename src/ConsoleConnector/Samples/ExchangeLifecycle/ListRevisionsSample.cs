@@ -27,11 +27,16 @@ namespace ConsoleConnector.Samples
             if (fileUrn == null)
                 return;
 
-            // SDK: resolve exchange metadata
+            // SDK: resolve exchange metadata.
+            // A picked exchange is known only by its file URN; the collection id needed by the
+            // GetExchangeDetailsAsync(collectionId, urn) overload is discoverable only from the
+            // details themselves, so the single-arg (obsolete) lookup is unavoidable here.
             ExchangeDetails details;
             try
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 details = await ctx.Client.GetExchangeDetailsAsync(fileUrn);
+#pragma warning restore CS0618
             }
             catch (Exception ex)
             {
