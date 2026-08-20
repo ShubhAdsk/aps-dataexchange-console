@@ -181,7 +181,7 @@ namespace ConsoleConnector.Common
             TerminalUi.Chat($"Elements before: {beforeCount}");
 
             var element = SampleDataFactory.CreateDemoLine(model);
-            TerminalUi.Success($"Added element: {element.Name} ({element.Id})");
+            TerminalUi.Success($"Added element: {element.Name} ({element.SourceId})");
 
             var response = await ctx.Client.SyncExchangeDataAsync(identifier, model, CancellationToken.None);
             if (response.IsFailed)

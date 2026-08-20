@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
 {
     /// <summary>
     /// What you learn: How to pull the latest cloud state into your in-memory model.
-    /// SDK: IClient.GetExchangeRevisionsAsync + RetrieveLatestExchangeDataAsync.
+    /// SDK: IClient.GetExchangeRevisionsAsync + RetrieveLatestExchangeAsync.
     /// Console plumbing: ElementSampleHelper.BeginAsync (pick loaded exchange).
     /// Prerequisites: load an exchange first (2.2).
     /// </summary>
@@ -52,7 +52,7 @@ namespace ConsoleConnector.Samples
             }
 
             // SDK: pull latest cloud data into in-memory model
-            var refreshResponse = await ctx.Client.RetrieveLatestExchangeDataAsync(model, cancellationToken: CancellationToken.None);
+            var refreshResponse = await ctx.Client.RetrieveLatestExchangeAsync(model, CancellationToken.None);
             if (refreshResponse.IsFailed)
             {
                 var message = refreshResponse.Errors.FirstOrDefault()?.Message ?? "Unknown error";
@@ -64,7 +64,7 @@ namespace ConsoleConnector.Samples
             TerminalUi.Success("Refresh complete.");
             TerminalUi.Chat($"Elements after: {afterCount}");
             foreach (var element in model.Elements.Take(10))
-                TerminalUi.Chat($"  {element.Name} ({element.Id})");
+                TerminalUi.Chat($"  {element.Name} ({element.SourceId})");
             if (afterCount > 10)
                 TerminalUi.Chat($"  ... and {afterCount - 10} more");
         }

@@ -42,7 +42,7 @@ namespace ConsoleConnector.Samples
 
             var geometry = GeometrySampleHelper.CreateLineGeometry();
             session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
-            TerminalUi.Success($"Set transform and attached geometry on {element.Name} ({element.Id}).");
+            TerminalUi.Success($"Set transform and attached geometry on {element.Name} ({element.SourceId}).");
             await ElementSampleHelper.SyncAsync(ctx, session);
         }
     }

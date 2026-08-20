@@ -51,7 +51,7 @@ namespace ConsoleConnector.Samples
             {
                 [attributeName] = attributeValue ?? string.Empty,
             });
-            TerminalUi.Success($"Set attribute on {element.Name} ({element.Id}):");
+            TerminalUi.Success($"Set attribute on {element.Name} ({element.SourceId}):");
             TerminalUi.Chat($"  {attributeName} = {attributeValue}");
             await ElementSampleHelper.SyncAsync(ctx, session);
         }

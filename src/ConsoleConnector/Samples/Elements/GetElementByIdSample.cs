@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ConsoleConnector.Driver;
 using ConsoleConnector.Common;
@@ -7,7 +8,7 @@ namespace ConsoleConnector.Samples
 {
     /// <summary>
     /// What you learn: How to look up one element by its source id.
-    /// SDK: ElementDataModel.GetElementById.
+    /// SDK: ElementDataModel.GetElementsBySourceId.
     /// Console plumbing: ElementSampleHelper.
     /// Prerequisites: 2.2 Load Exchange.
     /// </summary>
@@ -30,7 +31,7 @@ namespace ConsoleConnector.Samples
                 return;
             }
 
-            var element = model.GetElementById(elementId);
+            var element = model.GetElementsBySourceId(elementId).FirstOrDefault();
             if (element == null)
             {
                 TerminalUi.Warning($"No element found with id: {elementId}");
