@@ -20,14 +20,14 @@ namespace ConsoleConnector.Common
             if (string.IsNullOrWhiteSpace(byId))
                 return null;
 
-            var found = model.GetElementById(byId.Trim());
+            var found = model.GetElementsBySourceId(byId.Trim()).FirstOrDefault();
             if (found == null)
             {
                 TerminalUi.Warning("Unknown element id.");
                 return null;
             }
 
-            TerminalUi.Chat($"Selected: {found.Name} ({found.Id})");
+            TerminalUi.Chat($"Selected: {found.Name} ({found.SourceId})");
             return found;
         }
 
@@ -39,7 +39,7 @@ namespace ConsoleConnector.Common
 
         private static IElement? PickFrom(IReadOnlyList<IElement> elements, string prompt)
         {
-            var valid = elements.Where(e => !string.IsNullOrWhiteSpace(e.Id)).ToList();
+            var valid = elements.Where(e => !string.IsNullOrWhiteSpace(e.SourceId)).ToList();
             if (valid.Count == 0)
             {
                 TerminalUi.Warning("No elements with usable ids in the loaded model.");
@@ -49,25 +49,25 @@ namespace ConsoleConnector.Common
             if (valid.Count == 1)
             {
                 var only = valid[0];
-                TerminalUi.Chat($"{prompt}: {only.Name} ({only.Id})");
+                TerminalUi.Chat($"{prompt}: {only.Name} ({only.SourceId})");
                 return only;
             }
 
             if (BatchMode.Enabled)
             {
                 var preferred = valid.LastOrDefault(IsSampleElement) ?? valid[^1];
-                TerminalUi.Chat($"{prompt}: {preferred.Name} ({preferred.Id})");
+                TerminalUi.Chat($"{prompt}: {preferred.Name} ({preferred.SourceId})");
                 return preferred;
             }
 
             var picked = ListPicker.PickOne(
                 prompt,
                 valid,
-                e => ListPicker.FormatNameAndDetail(e.Name, e.Id));
+                e => ListPicker.FormatNameAndDetail(e.Name, e.SourceId));
 
             if (picked != null)
             {
-                TerminalUi.Chat($"Selected: {picked.Name} ({picked.Id})");
+                TerminalUi.Chat($"Selected: {picked.Name} ({picked.SourceId})");
                 return picked;
             }
 
@@ -76,15 +76,15 @@ namespace ConsoleConnector.Common
 
         private static bool IsSampleElement(IElement element) =>
             element.Name?.StartsWith("Sample", StringComparison.OrdinalIgnoreCase) == true
-            || element.Id.StartsWith("Line_", StringComparison.Ordinal)
-            || element.Id.StartsWith("Root_", StringComparison.Ordinal)
-            || element.Id.StartsWith("Child_", StringComparison.Ordinal)
-            || element.Id.StartsWith("Geom_", StringComparison.Ordinal);
+            || element.SourceId.StartsWith("Line_", StringComparison.Ordinal)
+            || element.SourceId.StartsWith("Root_", StringComparison.Ordinal)
+            || element.SourceId.StartsWith("Child_", StringComparison.Ordinal)
+            || element.SourceId.StartsWith("Geom_", StringComparison.Ordinal);
 
         internal static void PrintList(IReadOnlyList<IElement> elements)
         {
             var rows = elements
-                .Select((e, i) => (Index: (i + 1).ToString(), Name: e.Name, Id: e.Id))
+                .Select((e, i) => (Index: (i + 1).ToString(), Name: e.Name, Id: e.SourceId))
                 .ToList();
 
             TerminalUi.WriteTable(

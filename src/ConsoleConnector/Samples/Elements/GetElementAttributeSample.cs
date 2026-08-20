@@ -41,12 +41,12 @@ namespace ConsoleConnector.Samples
             var attributes = element.Attributes;
             if (attributes == null || attributes.Count == 0)
             {
-                TerminalUi.Warning($"{element.Name} ({element.Id}) has no attributes.");
+                TerminalUi.Warning($"{element.Name} ({element.SourceId}) has no attributes.");
             TerminalUi.Chat("Run 3.8 Add Element Attributes first.");
                 return;
             }
 
-            TerminalUi.Chat($"Attributes on {element.Name} ({element.Id}):");
+            TerminalUi.Chat($"Attributes on {element.Name} ({element.SourceId}):");
             foreach (var kvp in attributes.OrderBy(a => a.Key))
                 TerminalUi.Chat($"  {kvp.Key} = {kvp.Value}");
             var attributeName = Prompt.AskString("Attribute name to read", attributes.Keys.First());

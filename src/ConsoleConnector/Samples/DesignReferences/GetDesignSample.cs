@@ -23,7 +23,7 @@ namespace ConsoleConnector.Samples
             var session = await DesignSampleHelper.BeginAsync(ctx);
             if (session == null)
                 return;
-            var designs = session.Model.GetDesigns().ToList();
+            var designs = session.Model.GetDesignRefs().ToList();
             if (designs.Count == 0)
             {
                 TerminalUi.Warning("No designs in model. Run 6.1 first.");
@@ -31,7 +31,7 @@ namespace ConsoleConnector.Samples
             }
 
             foreach (var entry in designs)
-                TerminalUi.Chat($"  {entry.Name} ({entry.ID})");
+                TerminalUi.Chat($"  {entry.Name} ({entry.SourceId})");
             var elementId = Prompt.AskString("Definition element id", null);
             if (string.IsNullOrWhiteSpace(elementId))
                 return;
