@@ -39,12 +39,12 @@ namespace ConsoleConnector.Samples
             }
 
             var beforeCount = model.Elements.Count();
-            TerminalUi.Chat($"Deleting {element.Name} ({element.Id})...");
+            TerminalUi.Chat($"Deleting {element.Name} ({element.SourceId})...");
             TerminalUi.Chat($"Elements before: {beforeCount}");
-            var deleted = model.DeleteElement(element.Id);
+            var deleted = model.DeleteElementByUniqueId(element.UniqueId);
             if (!deleted)
             {
-                TerminalUi.Chat("DeleteElement returned false.");
+                TerminalUi.Chat("DeleteElementByUniqueId returned false.");
                 return;
             }
 
