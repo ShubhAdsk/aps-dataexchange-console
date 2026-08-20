@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Autodesk.DataExchange.DataModels;
+using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.SchemaObjects.Units;
 using Autodesk.GeometryUtilities.PrimitivesAPI;
 using Autodesk.GeometryUtilities.PrimitivesAPI.DX;
@@ -16,17 +17,15 @@ namespace ConsoleConnector.Samples
         private static readonly RenderStyle DemoLineStyle =
             new("ConsoleConnector Line", new RGBA(255, 0, 0, 255), 1);
 
-        internal static Element CreateDemoLine(ElementDataModel model)
+        internal static IElement CreateDemoLine(ElementDataModel model)
         {
             var elementId = $"Line_{Guid.NewGuid():N}"[..12];
-            var element = model.AddElement(new ElementProperties(
+            var element = model.AddElement(
                 elementId,
                 "Sample Line",
-                "Generics",
-                "Generic",
-                "ConsoleConnector sample line",
                 lengthUnit: UnitFactory.Centimeter,
-                displayLengthUnit: UnitFactory.Centimeter));
+                displayLengthUnit: UnitFactory.Centimeter);
+            ElementSampleHelper.ClassifyGeneric(model, element);
 
             var geometryContainer = new GeometryContainer();
             var line = new Line(
@@ -42,7 +41,7 @@ namespace ConsoleConnector.Samples
 
             var units = new Autodesk.DataExchange.DataModels.Units(UnitFactory.Centimeter, UnitFactory.Centimeter, UnitFactory.Centimeter);
             var geometry = ElementDataModel.CreatePrimitiveGeometry(geometryContainer, DemoLineStyle, units);
-            model.SetElementGeometry(element, new List<ElementGeometry> { geometry });
+            model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
             return element;
         }
     }
