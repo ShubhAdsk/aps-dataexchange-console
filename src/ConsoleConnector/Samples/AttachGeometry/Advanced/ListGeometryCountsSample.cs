@@ -37,8 +37,8 @@ namespace ConsoleConnector.Samples
                 return;
             }
 
-            var counts = session.Model.GetElementGeometryCounts(new[] { (Element)element });
-            TerminalUi.Chat($"Geometry counts for {element.Name} ({element.Id}):");
+            var counts = session.Model.GetElementGeometryCounts(new[] { element });
+            TerminalUi.Chat($"Geometry counts for {element.Name} ({element.SourceId}):");
             GeometrySampleHelper.PrintGeometryCounts(counts);
         }
     }
