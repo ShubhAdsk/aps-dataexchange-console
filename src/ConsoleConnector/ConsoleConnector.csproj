@@ -431,6 +431,12 @@
     <Compile Include="Samples\Navigation\ListProjectsSample.cs" />
     <Compile Include="Samples\Navigation\ListFoldersSample.cs" />
     <Compile Include="Samples\Navigation\ListExchangesSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\CreateExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\LoadExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\SyncExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\RefreshExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\ListRevisionsSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\DeleteExchangeSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
