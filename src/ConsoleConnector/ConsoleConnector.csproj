@@ -511,6 +511,10 @@
     <Compile Include="Samples\DownloadExchange\DownloadExchangeAsStepSample.cs" />
     <Compile Include="Samples\DownloadExchange\DownloadExchangeAsIfcSample.cs" />
     <Compile Include="Samples\DownloadExchange\DownloadExchangeAsObjSample.cs" />
+    <Compile Include="Samples\Revisions\ListCreatedElementsSample.cs" />
+    <Compile Include="Samples\Revisions\ListModifiedElementsSample.cs" />
+    <Compile Include="Samples\Revisions\ListDeletedElementsSample.cs" />
+    <Compile Include="Samples\Revisions\ListAllChangedElementsSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
