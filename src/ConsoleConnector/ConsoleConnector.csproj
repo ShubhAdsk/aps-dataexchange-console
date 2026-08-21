@@ -437,6 +437,15 @@
     <Compile Include="Samples\ExchangeLifecycle\RefreshExchangeSample.cs" />
     <Compile Include="Samples\ExchangeLifecycle\ListRevisionsSample.cs" />
     <Compile Include="Samples\ExchangeLifecycle\DeleteExchangeSample.cs" />
+    <Compile Include="Samples\Elements\AddRootElementSample.cs" />
+    <Compile Include="Samples\Elements\AddChildElementSample.cs" />
+    <Compile Include="Samples\Elements\ListElementsSample.cs" />
+    <Compile Include="Samples\Elements\GetElementByIdSample.cs" />
+    <Compile Include="Samples\Elements\DeleteElementSample.cs" />
+    <Compile Include="Samples\Elements\ListChildElementsSample.cs" />
+    <Compile Include="Samples\Elements\ShowElementModificationsSample.cs" />
+    <Compile Include="Samples\Elements\AddElementAttributesSample.cs" />
+    <Compile Include="Samples\Elements\GetElementAttributeSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
