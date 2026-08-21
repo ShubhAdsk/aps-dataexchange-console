@@ -141,7 +141,8 @@ namespace ConsoleConnector.Common
         internal static async Task<bool> AttachPrimitiveAsync(
             SampleContext ctx,
             Func<PrimitiveGeometry> geometryFactory,
-            string geometryLabel)
+            string geometryLabel,
+            bool syncAfter = true)
         {
             var session = await BeginAsync(ctx);
             if (session == null)
@@ -154,6 +155,9 @@ namespace ConsoleConnector.Common
             var geometry = geometryFactory();
             session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
             TerminalUi.Success($"Attached {geometryLabel} to {element.Name} ({element.SourceId}).");
+            if (!syncAfter)
+                return true;
+
             return await ElementSampleHelper.SyncAsync(ctx, session);
         }
 

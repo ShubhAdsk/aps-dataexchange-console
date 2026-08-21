@@ -47,5 +47,80 @@ namespace ConsoleConnector.Common
             var id = Prompt.AskString("Design id", defaultId ?? "chair-id");
             return (name, id);
         }
+
+        /// <summary>Creates a design ref from a new or existing definition element. Used by 6.1 and scenarios that need one.</summary>
+        internal static async Task<(ElementSampleSession Session, IDesign Design)?> CreateOrGetDesignRefInteractiveAsync(SampleContext ctx, bool syncAfter)
+        {
+            var session = await BeginAsync(ctx);
+            if (session == null)
+                return null;
+
+            var (designName, designId) = PromptDesignIdentity();
+            var existing = session.Model.GetDesignRefs()
+                .FirstOrDefault(d => string.Equals(d.SourceId, designId, StringComparison.OrdinalIgnoreCase));
+            IDesign design;
+            if (existing != null)
+            {
+                PrintDesignSummary(session.Model, existing);
+                design = existing;
+            }
+            else
+            {
+                var defId = Prompt.AskString("Definition element id", $"def_{Guid.NewGuid():N}"[..10]);
+                var defName = Prompt.AskString("Definition element name", designName);
+                var def = CreateDefinitionWithMesh(session.Model, defId, defName);
+                design = CreateDesignRef(session.Model, def, designName, designId);
+                PrintDesignSummary(session.Model, design);
+            }
+
+            if (syncAfter)
+                await ElementSampleHelper.SyncAsync(ctx, session);
+
+            return (session, design);
+        }
+
+        /// <summary>Creates an instance element from a design ref (new or existing). Used by 6.6 and scenarios that need one.</summary>
+        internal static async Task<(ElementSampleSession Session, IDesign Design)?> InstantiateDesignInteractiveAsync(SampleContext ctx, bool syncAfter)
+        {
+            var session = await BeginAsync(ctx);
+            if (session == null)
+                return null;
+
+            var (designName, designId) = PromptDesignIdentity();
+            var defId = Prompt.AskString("Definition element id (existing or new)", $"def_{designId}");
+            var def = session.Model.GetElementsBySourceId(defId).FirstOrDefault();
+            IDesign design;
+
+            var existingDesign = session.Model.GetDesignRefs()
+                .FirstOrDefault(d => string.Equals(d.SourceId, designId, StringComparison.OrdinalIgnoreCase));
+            if (existingDesign != null)
+            {
+                design = existingDesign;
+            }
+            else if (def == null)
+            {
+                def = CreateDefinitionWithMesh(session.Model, defId, designName);
+                design = CreateDesignRef(session.Model, def, designName, designId);
+            }
+            else
+            {
+                design = session.Model.GetOrCreateDesignRef(def, designName, designId);
+            }
+
+            var instanceId = Prompt.AskString("Instance element id", $"inst_{Guid.NewGuid():N}"[..10]);
+            var instanceName = Prompt.AskString("Instance element name", $"{designName}@Site");
+            var instance = CreateInstance(session.Model, instanceId, instanceName);
+            var useById = Prompt.AskString("Use InstantiateDesignBySourceId? [y/N]", "N");
+            if (string.Equals(useById, "y", StringComparison.OrdinalIgnoreCase))
+                session.Model.InstantiateDesignBySourceId(designId, instance);
+            else
+                session.Model.InstantiateDesign(design, instance);
+            PrintDesignSummary(session.Model, design);
+
+            if (syncAfter)
+                await ElementSampleHelper.SyncAsync(ctx, session);
+
+            return (session, design);
+        }
     }
 }

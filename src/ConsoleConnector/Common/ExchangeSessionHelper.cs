@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Autodesk.DataExchange;
 using Autodesk.DataExchange.Core.Enums;
@@ -128,6 +129,88 @@ namespace ConsoleConnector.Common
 
             RememberCreated(ctx, response.Value, fileName);
             PrintCreated(response.Value);
+            return true;
+        }
+
+        /// <summary>Picks a file from the session folder, resolves its details, and loads it. Used by 2.2 Load Exchange and scenarios that need a loaded exchange.</summary>
+        internal static async Task<bool> LoadPickedExchangeAsync(SampleContext ctx)
+        {
+            var fileUrn = await NavigationHelper.PickExchangeFileUrnAsync(ctx);
+            if (fileUrn == null)
+                return false;
+
+            ExchangeDetails details;
+            try
+            {
+                details = default!;
+                await TerminalUi.RunWithStatusAsync(
+                    "Resolving exchange details…",
+                    async () =>
+                    {
+                        // A freshly picked exchange is known only by its file URN; the collection id is
+                        // discoverable only from the details themselves, so the single-arg (obsolete)
+                        // lookup is the only resolver available for this bootstrap path.
+#pragma warning disable CS0618 // Type or member is obsolete
+                        details = await ctx.Client.GetExchangeDetailsAsync(fileUrn).ConfigureAwait(false);
+#pragma warning restore CS0618
+                    });
+            }
+            catch (Exception ex)
+            {
+                TerminalUi.Error($"Failed to resolve exchange: {ex}");
+                return false;
+            }
+
+            return await LoadFromDetailsAsync(ctx, details);
+        }
+
+        /// <summary>Adds a demo line element to a loaded exchange and syncs. Used by 2.3 Sync Exchange and scenarios that need a quick sync.</summary>
+        internal static async Task<bool> SyncDemoLineAsync(SampleContext ctx, string? preferredTitle)
+        {
+            if (!NavigationHelper.EnsureFullFolder(ctx))
+                return false;
+
+            var active = LoadedExchangePicker.Pick(ctx, preferredTitle ?? ctx.ScenarioExchangeTitle);
+            if (active == null)
+            {
+                if (ctx.Exchanges.Count == 0)
+                    TerminalUi.Warning("No loaded exchange. Run 2.2 Load Exchange first.");
+                else
+                    TerminalUi.Dim("Cancelled.");
+                return false;
+            }
+
+            var detailsResponse = await ctx.Client
+                .GetExchangeDetailsAsync(active.CollectionId, active.ExchangeFileUrn)
+                .ConfigureAwait(false);
+            if (detailsResponse.IsFailed)
+            {
+                var detailsError = detailsResponse.Errors.FirstOrDefault()?.Message ?? "Unknown error";
+                TerminalUi.Error($"Failed to resolve exchange: {detailsError}");
+                return false;
+            }
+
+            var details = detailsResponse.Value;
+            var identifier = ToIdentifier(details, ctx.Folder!.HubId);
+            var model = active.DataModel;
+
+            var beforeCount = model.Elements.Count();
+            TerminalUi.Info($"Syncing to {details.DisplayName ?? active.ExchangeFileUrn}...");
+            TerminalUi.Chat($"Elements before: {beforeCount}");
+
+            var element = SampleDataFactory.CreateDemoLine(model);
+            TerminalUi.Success($"Added element: {element.Name} ({element.SourceId})");
+
+            var response = await ctx.Client.SyncExchangeDataAsync(identifier, model, CancellationToken.None);
+            if (response.IsFailed)
+            {
+                var message = response.Errors.FirstOrDefault()?.Message ?? "Unknown error";
+                TerminalUi.Error($"Sync failed: {message}");
+                return false;
+            }
+
+            TerminalUi.Success("Sync complete.");
+            TerminalUi.Chat($"Elements after: {model.Elements.Count()}");
             return true;
         }
 
