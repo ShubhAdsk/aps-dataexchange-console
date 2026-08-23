@@ -46,8 +46,7 @@ namespace ConsoleConnector.Samples
                 var path = DownloadSampleHelper.ResolveOutputPath("OBJ output folder", "exchange_obj");
                 await DownloadSampleHelper.RunExchangeDownloadAsync(
                     "OBJ",
-                    () => ctx.Client.DownloadCompleteExchangeAsOBJ(
-                        objSession.Identifier.ExchangeId, objSession.Identifier.CollectionId, path, CancellationToken.None));
+                    () => DownloadSampleHelper.DownloadObj(ctx, objSession.Identifier, path));
             }
 
             TerminalUi.Success("Scenario complete.");

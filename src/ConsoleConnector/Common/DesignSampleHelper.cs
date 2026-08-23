@@ -13,7 +13,8 @@ namespace ConsoleConnector.Common
     {
         internal static async Task<ElementSampleSession?> BeginAsync(SampleContext ctx) =>
             await ElementSampleHelper.BeginAsync(ctx);
-            internal static IElement CreateDefinitionWithMesh(ElementDataModel model, string elementId, string name)
+
+        internal static IElement CreateDefinitionWithMesh(ElementDataModel model, string elementId, string name)
         {
             var def = model.AddElement(elementId, name);
             ElementSampleHelper.ClassifyGeneric(model, def);
@@ -30,9 +31,7 @@ namespace ConsoleConnector.Common
             return instance;
         }
 
-        internal static IDesign CreateDesignRef(ElementDataModel model, IElement def, string designName, string designId) =>
-            model.GetOrCreateDesignRef(def, designName, designId);
-            internal static void PrintDesignSummary(ElementDataModel model, IDesign design)
+        internal static void PrintDesignSummary(ElementDataModel model, IDesign design)
         {
             var instances = model.GetDesignInstances(design).ToList();
             TerminalUi.Chat($"  Design: {design.Name} (id: {design.SourceId})");
@@ -69,7 +68,7 @@ namespace ConsoleConnector.Common
                 var defId = Prompt.AskString("Definition element id", $"def_{Guid.NewGuid():N}"[..10]);
                 var defName = Prompt.AskString("Definition element name", designName);
                 var def = CreateDefinitionWithMesh(session.Model, defId, defName);
-                design = CreateDesignRef(session.Model, def, designName, designId);
+                design = session.Model.GetOrCreateDesignRef(def, designName, designId);
                 PrintDesignSummary(session.Model, design);
             }
 
@@ -100,7 +99,7 @@ namespace ConsoleConnector.Common
             else if (def == null)
             {
                 def = CreateDefinitionWithMesh(session.Model, defId, designName);
-                design = CreateDesignRef(session.Model, def, designName, designId);
+                design = session.Model.GetOrCreateDesignRef(def, designName, designId);
             }
             else
             {
@@ -110,8 +109,8 @@ namespace ConsoleConnector.Common
             var instanceId = Prompt.AskString("Instance element id", $"inst_{Guid.NewGuid():N}"[..10]);
             var instanceName = Prompt.AskString("Instance element name", $"{designName}@Site");
             var instance = CreateInstance(session.Model, instanceId, instanceName);
-            var useById = Prompt.AskString("Use InstantiateDesignBySourceId? [y/N]", "N");
-            if (string.Equals(useById, "y", StringComparison.OrdinalIgnoreCase))
+            var useBySourceId = Prompt.AskString("Use InstantiateDesignBySourceId? [y/N]", "N");
+            if (string.Equals(useBySourceId, "y", StringComparison.OrdinalIgnoreCase))
                 session.Model.InstantiateDesignBySourceId(designId, instance);
             else
                 session.Model.InstantiateDesign(design, instance);

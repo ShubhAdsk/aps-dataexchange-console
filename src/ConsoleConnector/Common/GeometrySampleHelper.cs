@@ -23,9 +23,11 @@ namespace ConsoleConnector.Common
     {
         internal static readonly RenderStyle DefaultRenderStyle =
             new("ConsoleConnector", new RGBA(0, 120, 215, 255), 1);
-            internal static Autodesk.DataExchange.DataModels.Units DefaultUnits =>
+
+        internal static Autodesk.DataExchange.DataModels.Units DefaultUnits =>
             new(UnitFactory.Centimeter, UnitFactory.Centimeter, UnitFactory.Centimeter);
-            internal static Client RequireClient(SampleContext ctx)
+
+        internal static Client RequireClient(SampleContext ctx)
         {
             if (ctx.Client is Client client && client.SDKOptions != null)
                 return client;
@@ -38,7 +40,8 @@ namespace ConsoleConnector.Common
 
         internal static async Task<ElementSampleSession?> BeginAsync(SampleContext ctx) =>
             await ElementSampleHelper.BeginAsync(ctx);
-            internal static string ResolvePath(SampleContext ctx, string label, string? sessionDefault, params string[] assetFileNames)
+
+        internal static string ResolvePath(SampleContext ctx, string label, string? sessionDefault, params string[] assetFileNames)
         {
             var fileName = assetFileNames[^1];
             var fallback = sessionDefault ?? FindAssetFile(fileName);

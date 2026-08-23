@@ -15,7 +15,8 @@ namespace ConsoleConnector.Common
     {
         internal static async Task<ElementSampleSession?> BeginAsync(SampleContext ctx) =>
             await ElementSampleHelper.BeginAsync(ctx);
-            internal static async Task<List<string>> GetRevisionIdsAsync(SampleContext ctx, ElementSampleSession session)
+
+        internal static async Task<List<string>> GetRevisionIdsAsync(SampleContext ctx, ElementSampleSession session)
         {
             var response = await ctx.Client.GetExchangeRevisionsAsync(session.Identifier);
             if (response.IsFailed)

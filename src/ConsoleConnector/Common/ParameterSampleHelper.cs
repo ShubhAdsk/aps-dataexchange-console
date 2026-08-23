@@ -21,7 +21,8 @@ namespace ConsoleConnector.Common
 
         internal static async Task<ElementSampleSession?> BeginAsync(SampleContext ctx) =>
             await ElementSampleHelper.BeginAsync(ctx);
-            internal static string DefaultBuiltInSchemaId(SampleContext ctx) =>
+
+        internal static string DefaultBuiltInSchemaId(SampleContext ctx) =>
             string.IsNullOrWhiteSpace(ctx.Defaults.BuiltInSchemaId)
                 ? DefaultBuiltInSchema
                 : ctx.Defaults.BuiltInSchemaId!;
@@ -96,7 +97,8 @@ namespace ConsoleConnector.Common
 
         internal static Parameter CreateBuiltInParameter(string schemaId, ParameterDataType value) =>
             new Parameter(new ParameterSchemaId(schemaId), value);
-            internal static async Task<IParameter?> AddBuiltInInstanceParamAsync(IElement element, string schemaId, ParameterDataType value)
+
+        internal static async Task<IParameter?> AddBuiltInInstanceParamAsync(IElement element, string schemaId, ParameterDataType value)
         {
             var parameter = CreateBuiltInParameter(schemaId, value);
             var added = await element.CreateInstanceParameterAsync(parameter);
@@ -148,7 +150,8 @@ namespace ConsoleConnector.Common
         }
 
         internal static string GeneralGroupId => Group.General.DisplayName();
-            internal static string DimensionsGroupId => Group.Dimensions.DisplayName();
+
+        internal static string DimensionsGroupId => Group.Dimensions.DisplayName();
 
         internal static string SuggestUniqueCustomParamName(IElement element, string baseName = "DoorLength")
         {
@@ -212,7 +215,8 @@ namespace ConsoleConnector.Common
             };
 
         internal static string GraphicsGroupId => Group.Graphics.DisplayName();
-            internal static async Task<IParameter?> AddModelLevelParamAsync(ElementDataModel model, string name, ParameterDataType value)
+
+        internal static async Task<IParameter?> AddModelLevelParamAsync(ElementDataModel model, string name, ParameterDataType value)
         {
             var parameter = CreateCustomParameter(name, value, GeneralGroupId);
             return await model.AddParameterAsync(parameter);

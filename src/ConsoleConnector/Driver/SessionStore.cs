@@ -1,8 +1,11 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Autodesk.Newtonsoft.Json;
+using System.Text.Json;
 using ConsoleConnector.Samples;
+
+// System.Text.Json, not Autodesk.Newtonsoft.Json: the SDK's Release NuGet ILRepacks and
+// internalizes Autodesk.Newtonsoft.Json, so JsonConvert is inaccessible there (CS0122).
 
 namespace ConsoleConnector.Driver
 {
@@ -37,6 +40,8 @@ namespace ConsoleConnector.Driver
             }
         }
 
+        private static readonly JsonSerializerOptions SessionJsonOptions = new JsonSerializerOptions { WriteIndented = true };
+
         public static string SessionFilePath => Path.Combine(SessionDirectory, SessionFileName);
 
         public static SessionData Load()
@@ -45,13 +50,13 @@ namespace ConsoleConnector.Driver
                 return new SessionData();
 
             var json = File.ReadAllText(SessionFilePath);
-            return JsonConvert.DeserializeObject<SessionData>(json) ?? new SessionData();
+            return JsonSerializer.Deserialize<SessionData>(json, SessionJsonOptions) ?? new SessionData();
         }
 
         public static void Save(SessionData session)
         {
             Directory.CreateDirectory(SessionDirectory);
-            var json = JsonConvert.SerializeObject(session, Formatting.Indented);
+            var json = JsonSerializer.Serialize(session, SessionJsonOptions);
             File.WriteAllText(SessionFilePath, json);
         }
 

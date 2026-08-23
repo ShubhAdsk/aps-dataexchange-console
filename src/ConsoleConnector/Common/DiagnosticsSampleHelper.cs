@@ -15,7 +15,8 @@ namespace ConsoleConnector.Common
 
         internal static Client RequireClient(SampleContext ctx) =>
             GeometrySampleHelper.RequireClient(ctx);
-            internal static ILogger GetLogger(Client client) =>
+
+        internal static ILogger GetLogger(Client client) =>
             client.SDKOptions!.Logger;
 
         internal static void EnableHttpDebugLogging(ILogger logger)
