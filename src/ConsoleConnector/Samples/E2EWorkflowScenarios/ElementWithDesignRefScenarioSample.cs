@@ -6,7 +6,7 @@ namespace ConsoleConnector.Samples
 {
     /// <summary>
     /// What you learn: Design-ref pattern: one definition, multiple instances.
-    /// SDK: CreateDesignRef + InstantiateDesign + SyncExchangeDataAsync.
+    /// SDK: GetOrCreateDesignRef + InstantiateDesign + SyncExchangeDataAsync.
     /// Console plumbing: ExchangeSessionHelper + DesignSampleHelper.
     /// Prerequisites: folder in session.
     /// </summary>
